@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://cq7e3jfwyxq7k"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3nsfk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gkag5"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_v21bx"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sq4r6"]
+
+[sub_resource type="Sky" id="Sky_tb4va"]
+sky_material = SubResource("ProceduralSkyMaterial_sq4r6")
+
+[sub_resource type="Environment" id="Environment_wfkdt"]
+sky = SubResource("Sky_tb4va")
+ambient_light_source = 3
+ambient_light_color = Color(0, 1, 0.976471, 1)
+
+[node name="Environnement" type="Node3D"]
+
+[node name="Terrain" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -2.95173, 0)
+
+[node name="Wall" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 3.99, -3.971, 1, 0)
+mesh = SubResource("PlaneMesh_3nsfk")
+
+[node name="Wall2" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 3.99, 3.971, 1, 0)
+mesh = SubResource("PlaneMesh_3nsfk")
+
+[node name="Wall3" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -3.99, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1.74408e-07, 0, 1, 3.971)
+mesh = SubResource("PlaneMesh_3nsfk")
+
+[node name="Wall4" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 3.99, 1, -4.37114e-08, 0, 4.37114e-08, 1, -1.74408e-07, 0, 0.973, -3.972)
+mesh = SubResource("PlaneMesh_3nsfk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(-7.944, 0, 0, 0, 0.25, 0, 0, 0, -7.944, 0, 0, 0)
+mesh = SubResource("BoxMesh_gkag5")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_v21bx")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wfkdt")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.976897, -0.036556, 0.210563, -0.213712, -0.1671, 0.962499, 0, -0.985262, -0.171052, 0, 9.42436, 0)

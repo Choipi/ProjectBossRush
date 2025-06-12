@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dryepopei2s6t"]
+
+[ext_resource type="PackedScene" uid="uid://cq7e3jfwyxq7k" path="res://Scenes/environnement.tscn" id="1_2wl7v"]
+[ext_resource type="Script" uid="uid://mam0t14bowyl" path="res://Scripts/game_scene.gd" id="1_4bvgx"]
+
+[node name="GameScene" type="Node3D"]
+transform = Transform3D(4.66229, 0, 0, 0, 1, 0, 0, 0, 4.83592, 0, 0, 0)
+script = ExtResource("1_4bvgx")
+
+[node name="Environnement" parent="." instance=ExtResource("1_2wl7v")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://csex40yx82c7l")
+spawn_path = NodePath(".")

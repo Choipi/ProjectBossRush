@@ -1,0 +1,162 @@
+[gd_scene load_steps=7 format=3 uid="uid://cnpfcj1vxajp2"]
+
+[ext_resource type="Texture2D" uid="uid://dm6ipu6g4y4wg" path="res://Assets/Images/treee catu lunetu.webp" id="1_3kf3n"]
+[ext_resource type="FontFile" uid="uid://cn1vbujebnymj" path="res://Assets/Fonts/Arkinthor Hands Caps Heavy.otf" id="1_6pedr"]
+[ext_resource type="Script" uid="uid://biucje80sj14c" path="res://Scripts/new_menu.gd" id="1_ma218"]
+[ext_resource type="Script" uid="uid://enp2l2xdkgts" path="res://Scripts/new_main_menu.gd" id="2_idohh"]
+[ext_resource type="Script" uid="uid://cfj35yva5fsj1" path="res://Scripts/lobby.gd" id="2_s2c3o"]
+[ext_resource type="PackedScene" uid="uid://dlpd4s2rjni0k" path="res://Scenes/PlayerSlot.tscn" id="2_syfuq"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ma218")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = -1
+anchor_left = 0.343
+anchor_top = 0.17
+anchor_right = 0.668
+anchor_bottom = 0.836
+offset_left = -0.136017
+offset_top = -0.160004
+offset_right = 0.463928
+offset_bottom = 0.271973
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="Control" parent="CanvasLayer/Panel"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_idohh")
+
+[node name="Username" type="LineEdit" parent="CanvasLayer/Panel/MainMenu"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+offset_left = 2.0
+offset_top = 117.0
+offset_right = 377.0
+offset_bottom = 157.0
+placeholder_text = "Username..."
+
+[node name="IP" type="LineEdit" parent="CanvasLayer/Panel/MainMenu"]
+layout_mode = 2
+offset_left = 2.0
+offset_top = 171.0
+offset_right = 377.0
+offset_bottom = 202.0
+text = "localhost"
+placeholder_text = "Enter IP"
+
+[node name="Port" type="LineEdit" parent="CanvasLayer/Panel/MainMenu"]
+layout_mode = 2
+offset_left = 2.0
+offset_top = 233.0
+offset_right = 377.0
+offset_bottom = 264.0
+text = "8080"
+placeholder_text = "Enter Port"
+
+[node name="Title" type="Label" parent="CanvasLayer/Panel/MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -1.0
+offset_right = 336.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_6pedr")
+theme_override_font_sizes/font_size = 30
+text = "INSERT GAME NAME"
+horizontal_alignment = 1
+
+[node name="Host Game Button" type="Button" parent="CanvasLayer/Panel/MainMenu"]
+layout_mode = 0
+offset_top = 316.0
+offset_right = 94.0
+offset_bottom = 347.0
+text = "Host Game"
+
+[node name="Join Game Button" type="Button" parent="CanvasLayer/Panel/MainMenu"]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 316.0
+offset_right = 212.0
+offset_bottom = 347.0
+text = "Join Game"
+
+[node name="Lobby" type="Control" parent="CanvasLayer/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_s2c3o")
+
+[node name="PlayerSlotList" type="VBoxContainer" parent="CanvasLayer/Panel/Lobby"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 12.0
+offset_right = 259.0
+offset_bottom = 315.0
+
+[node name="PlayerSlot" parent="CanvasLayer/Panel/Lobby/PlayerSlotList" instance=ExtResource("2_syfuq")]
+layout_mode = 2
+script = null
+
+[node name="PlayerSlot2" parent="CanvasLayer/Panel/Lobby/PlayerSlotList" instance=ExtResource("2_syfuq")]
+layout_mode = 2
+script = null
+
+[node name="PlayerSlot3" parent="CanvasLayer/Panel/Lobby/PlayerSlotList" instance=ExtResource("2_syfuq")]
+layout_mode = 2
+script = null
+
+[node name="StartGame" type="Button" parent="CanvasLayer/Panel/Lobby"]
+layout_mode = 0
+offset_left = 171.0
+offset_top = 389.0
+offset_right = 267.0
+offset_bottom = 420.0
+text = "Start Game"
+
+[node name="QuitGame" type="Button" parent="CanvasLayer/Panel/Lobby"]
+layout_mode = 0
+offset_left = 274.0
+offset_top = 390.0
+offset_right = 366.0
+offset_bottom = 421.0
+text = "Quit Game"
+
+[node name="LobbyUpdate" type="Timer" parent="CanvasLayer/Panel/Lobby"]
+wait_time = 0.5
+autostart = true
+
+[node name="BG" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.537255)
+z_index = -55
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_3kf3n")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="CanvasLayer/Panel/MainMenu/Host Game Button" to="CanvasLayer/Panel/MainMenu" method="_on_create_lobby_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MainMenu/Join Game Button" to="CanvasLayer/Panel/MainMenu" method="_on_join_lobby_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/Lobby/StartGame" to="CanvasLayer/Panel/Lobby" method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/Lobby/QuitGame" to="CanvasLayer/Panel/Lobby" method="_on_quit_game_pressed"]
+[connection signal="timeout" from="CanvasLayer/Panel/Lobby/LobbyUpdate" to="CanvasLayer/Panel/Lobby" method="update_ui"]

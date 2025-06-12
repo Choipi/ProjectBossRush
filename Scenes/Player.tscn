@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://csex40yx82c7l"]
+
+[ext_resource type="Script" uid="uid://b43jrl081sn8q" path="res://Scripts/character_body_3d.gd" id="1_rpqav"]
+[ext_resource type="Script" uid="uid://b24nc35ugdovh" path="res://Scripts/player_input_synch.gd" id="2_kyqiw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bo1nx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8gbba"]
+albedo_color = Color(1, 0.52549, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rpqav"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rpqav"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kyqiw"]
+properties/0/path = NodePath("PlayerInputSynch:move_input")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D"]
+floor_stop_on_slope = false
+script = ExtResource("1_rpqav")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_bo1nx")
+surface_material_override/0 = SubResource("StandardMaterial3D_8gbba")
+
+[node name="Hitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_rpqav")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.844178, 0.253317, -0.472434, 0.000542656, 0.880899, 0.473304, 0.536062, -0.399809, 0.743498, -2.36169, 6.07868, 3.78163)
+fov = 90.0
+
+[node name="PlayerSynch" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_rpqav")
+
+[node name="PlayerInputSynch" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_kyqiw")
+script = ExtResource("2_kyqiw")
