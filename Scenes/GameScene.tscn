@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dryepopei2s6t"]
+[gd_scene load_steps=4 format=3 uid="uid://dryepopei2s6t"]
 
 [ext_resource type="PackedScene" uid="uid://cq7e3jfwyxq7k" path="res://Scenes/environnement.tscn" id="1_2wl7v"]
 [ext_resource type="Script" uid="uid://mam0t14bowyl" path="res://Scripts/game_scene.gd" id="1_4bvgx"]
+[ext_resource type="PackedScene" uid="uid://cf521uvpwjhja" path="res://Scenes/boss_spawner.tscn" id="3_3mbwn"]
 
 [node name="GameScene" type="Node3D"]
 transform = Transform3D(4.66229, 0, 0, 0, 1, 0, 0, 0, 4.83592, 0, 0, 0)
 script = ExtResource("1_4bvgx")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://csex40yx82c7l", "uid://b6u8sumqq6yf5", "uid://bxe2id32cgasa")
+spawn_path = NodePath(".")
+
 [node name="Environnement" parent="." instance=ExtResource("1_2wl7v")]
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://csex40yx82c7l")
-spawn_path = NodePath(".")
+[node name="BossSpawner" parent="." node_paths=PackedStringArray("spawner_node") instance=ExtResource("3_3mbwn")]
+transform = Transform3D(51.0641, 0, 0, 0, 1, 0, 0, 0, 54.5345, 22.3948, 2.28882e-05, 20.9744)
+spawner_node = NodePath("../MultiplayerSpawner")

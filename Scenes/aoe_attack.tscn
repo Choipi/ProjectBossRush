@@ -1,0 +1,138 @@
+[gd_scene load_steps=9 format=3 uid="uid://bxe2id32cgasa"]
+
+[ext_resource type="Script" uid="uid://lilu71ualpig" path="res://aoe_attack.gd" id="1_v5u3v"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_83822"]
+inner_radius = 0.8
+outer_radius = 0.734
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v5u3v"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_v5u3v"]
+height = 1.0
+radius = 0.6
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_83822"]
+height = 1.0
+radius = 0.63
+
+[sub_resource type="Animation" id="Animation_v5u3v"]
+resource_name = "Growing"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 4.59479),
+"update": 0,
+"values": [Vector3(1, 0.1, 1), Vector3(5, 0.1, 5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:mesh:outer_radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 3.13834),
+"update": 0,
+"values": [0.734, 0.785]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D/Area3D/InnerRadius:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.59, 0.63]
+}
+
+[sub_resource type="Animation" id="Animation_83822"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0.1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:mesh:outer_radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.734]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D/Area3D/InnerRadius:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.63]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8inbw"]
+_data = {
+&"Growing": SubResource("Animation_v5u3v"),
+&"RESET": SubResource("Animation_83822")
+}
+
+[node name="Aoe" type="Node3D"]
+script = ExtResource("1_v5u3v")
+
+[node name="LifeTime" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_83822")
+surface_material_override/0 = SubResource("StandardMaterial3D_v5u3v")
+
+[node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+transform = Transform3D(1.923, 0, 0, 0, 1, 0, 0, 0, 1.923, 0, 0.00658244, 0)
+
+[node name="OuterRadius" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
+transform = Transform3D(0.702478, 0, 0, 0, 0.702476, 0, 0, 0, 0.702478, 0, 0, 0)
+shape = SubResource("CylinderShape3D_v5u3v")
+debug_color = Color(0.176, 0.96, 0, 1)
+
+[node name="InnerRadius" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
+transform = Transform3D(0.643326, 0, 0, 0, 0.643326, 0, 0, 0, 0.643326, 0, 0, 0)
+shape = SubResource("CylinderShape3D_83822")
+debug_color = Color(0.176, 0.96, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_8inbw")
+}
+autoplay = "Growing"
+
+[connection signal="timeout" from="LifeTime" to="." method="_on_life_time_timeout"]

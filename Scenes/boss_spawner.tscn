@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf521uvpwjhja"]
+
+[ext_resource type="Script" uid="uid://okvdknphuh36" path="res://Scenes/boss_spawner.gd" id="1_ifrts"]
+[ext_resource type="PackedScene" uid="uid://b6u8sumqq6yf5" path="res://Scenes/boss.tscn" id="2_rpsua"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4bvgx"]
+
+[node name="BossSpawner" type="Area3D" node_paths=PackedStringArray("spawner_node")]
+transform = Transform3D(51.0641, 0, 0, 0, 1, 0, 0, 0, 54.5345, 0, 0, 0)
+script = ExtResource("1_ifrts")
+spawner_node = NodePath("")
+Boss_to_spawn = ExtResource("2_rpsua")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_4bvgx")
+
+[connection signal="body_entered" from="." to="." method="_on_spawning_zone_body_entered"]

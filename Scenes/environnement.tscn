@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cq7e3jfwyxq7k"]
+[gd_scene load_steps=9 format=3 uid="uid://cq7e3jfwyxq7k"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_3nsfk"]
 
@@ -6,6 +6,15 @@
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_v21bx"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="SphereMesh" id="SphereMesh_v21bx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gkag5"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(0.683333, 1, 0, 1)
+emission_enabled = true
+emission = Color(0.683333, 1, 0, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sq4r6"]
 
@@ -20,7 +29,7 @@ ambient_light_color = Color(0, 1, 0.976471, 1)
 [node name="Environnement" type="Node3D"]
 
 [node name="Terrain" type="Node3D" parent="."]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -2.95173, 0)
+transform = Transform3D(15.893, 0, 0, 0, 3, 0, 0, 0, 15.5497, 0, -2.95173, 0)
 
 [node name="Wall" type="MeshInstance3D" parent="Terrain"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 3.99, -3.971, 1, 0)
@@ -47,6 +56,18 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_v21bx")
+
+[node name="Light" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(0.103496, 0, 0, 0, -0.584163, 0, 0, 0, 0.0870271, 0.236209, 0.659153, 0.17047)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_v21bx")
+surface_material_override/0 = SubResource("StandardMaterial3D_gkag5")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Terrain/Light"]
+transform = Transform3D(0.607955, 0, 0, 0, 0.570617, 0, 0, 0, 0.738964, -0.0116482, -0.0322331, 0.00178146)
+light_color = Color(0.683333, 1, 0, 1)
+light_energy = 500.0
+omni_range = 1.962
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_wfkdt")

@@ -9,4 +9,4 @@ func _ready():
 		set_physics_process(false)
 
 func _physics_process (delta):
-	move_input = Input.get_vector("move_left", "move_right","move_up","move_down")
+	move_input = Input.get_vector("move_right", "move_left","move_up","move_down")
