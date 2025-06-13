@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bxe2id32cgasa"]
+[gd_scene load_steps=10 format=3 uid="uid://bxe2id32cgasa"]
 
 [ext_resource type="Script" uid="uid://lilu71ualpig" path="res://aoe_attack.gd" id="1_v5u3v"]
 
@@ -31,7 +31,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 4),
 "transitions": PackedFloat32Array(1, 4.59479),
 "update": 0,
-"values": [Vector3(1, 0.1, 1), Vector3(5, 0.1, 5)]
+"values": [Vector3(0.25, 0.1, 0.25), Vector3(15, 0.1, 15)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -48,7 +48,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D/Area3D/InnerRadius:shape:radius")
+tracks/2/path = NodePath("MeshInstance3D/Inner_Radius/InnerRadius:shape:radius")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -87,7 +87,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D/Area3D/InnerRadius:shape:radius")
+tracks/2/path = NodePath("MeshInstance3D/Inner_Radius/InnerRadius:shape:radius")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -103,7 +103,19 @@ _data = {
 &"RESET": SubResource("Animation_83822")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v5u3v"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="Aoe" type="Node3D"]
+transform = Transform3D(10.8272, 0, 0, 0, 10.8272, 0, 0, 0, 10.8272, 0, 0, 0)
 script = ExtResource("1_v5u3v")
 
 [node name="LifeTime" type="Timer" parent="."]
@@ -116,16 +128,18 @@ transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("TorusMesh_83822")
 surface_material_override/0 = SubResource("StandardMaterial3D_v5u3v")
 
-[node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+[node name="outer_radius" type="Area3D" parent="MeshInstance3D"]
 transform = Transform3D(1.923, 0, 0, 0, 1, 0, 0, 0, 1.923, 0, 0.00658244, 0)
 
-[node name="OuterRadius" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
-transform = Transform3D(0.702478, 0, 0, 0, 0.702476, 0, 0, 0, 0.702478, 0, 0, 0)
+[node name="OuterRadius" type="CollisionShape3D" parent="MeshInstance3D/outer_radius"]
+transform = Transform3D(0.702478, 0, 0, 0, 2.08319, 0, 0, 0, 0.702478, 0, 0, 0)
 shape = SubResource("CylinderShape3D_v5u3v")
 debug_color = Color(0.176, 0.96, 0, 1)
 
-[node name="InnerRadius" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
-transform = Transform3D(0.643326, 0, 0, 0, 0.643326, 0, 0, 0, 0.643326, 0, 0, 0)
+[node name="Inner_Radius" type="Area3D" parent="MeshInstance3D"]
+
+[node name="InnerRadius" type="CollisionShape3D" parent="MeshInstance3D/Inner_Radius"]
+transform = Transform3D(1.23712, 0, 0, 0, 1.90813, 0, 0, 0, 1.23712, 0, 0.00658244, 0)
 shape = SubResource("CylinderShape3D_83822")
 debug_color = Color(0.176, 0.96, 0, 1)
 
@@ -135,4 +149,11 @@ libraries = {
 }
 autoplay = "Growing"
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_v5u3v")
+
 [connection signal="timeout" from="LifeTime" to="." method="_on_life_time_timeout"]
+[connection signal="body_entered" from="MeshInstance3D/outer_radius" to="." method="_on_outer_radius_body_entered"]
+[connection signal="body_exited" from="MeshInstance3D/outer_radius" to="." method="_on_outer_radius_body_exited"]
+[connection signal="body_entered" from="MeshInstance3D/Inner_Radius" to="." method="_on_inner_radius_body_entered"]
+[connection signal="body_exited" from="MeshInstance3D/Inner_Radius" to="." method="_on_inner_radius_body_exited"]

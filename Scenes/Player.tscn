@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://b43jrl081sn8q" path="res://Scripts/character_body_3d.gd" id="1_rpqav"]
 [ext_resource type="Script" uid="uid://b24nc35ugdovh" path="res://Scripts/player_input_synch.gd" id="2_kyqiw"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_bo1nx"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kyqiw"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8gbba"]
-albedo_color = Color(1, 0.52549, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gntrk"]
+albedo_color = Color(1, 0.486275, 1, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rpqav"]
 
@@ -28,8 +28,8 @@ floor_stop_on_slope = false
 script = ExtResource("1_rpqav")
 
 [node name="Model" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_bo1nx")
-surface_material_override/0 = SubResource("StandardMaterial3D_8gbba")
+mesh = SubResource("CapsuleMesh_kyqiw")
+surface_material_override/0 = SubResource("StandardMaterial3D_gntrk")
 
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rpqav")

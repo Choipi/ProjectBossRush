@@ -2,7 +2,8 @@ extends Node3D
 
 @onready var attack_Spawn = $AttackOrigin
 @onready var aoe_attack = preload("res://Scenes/aoe_attack.tscn")
-
+@onready var network : NetworkManager = get_node("/root/Main/NetworkManager")
+@onready var spawner_node = get_node("/root/Main/GameScene/MultiplayerSpawner")
 @export var players_in_range: Array[PlayerChar] = []
 @export var player_targeted: PlayerChar
 @export var distance_to_target: float
@@ -44,3 +45,10 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 		players_in_range.erase(body)
 		if player_targeted and  body.name == player_targeted.name:
 			player_targeted = null
+
+
+func _on_delay_before_attack_timeout() -> void:
+	if is_multiplayer_authority():
+		var attack = aoe_attack.instantiate()
+		attack.position = $AttackOrigin.global_position
+		spawner_node.add_child(attack,true)

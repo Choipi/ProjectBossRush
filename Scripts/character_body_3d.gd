@@ -11,6 +11,9 @@ var is_alive : bool = true
 var game_manager
 var move_input: Vector2
 @onready var input: MultiplayerSynchronizer = $PlayerInputSynch
+var color_changed:bool = false
+var cant_interact: bool = false
+
 
 
 func _enter_tree() -> void:
@@ -24,15 +27,25 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		position = Vector3(1,3,1)
 
-
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
 		_move(delta)
 
+#func _change_color():
+	#if input.change_color:
+		#color_changed = !color_changed    
+		#if color_changed:
+			#var temp = $Model.get_surface_override_material(0)
+			#temp.albedo_color = Color.WHITE
+			#$Model.set_surface_override_material(0,temp)
+			#return
+		#var temp = $Model.get_surface_override_material(0)
+		#temp.albedo_color = Color.RED
+		#$Model.set_surface_override_material(0,temp)
 
 func _move(delta):
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		velocity.y -= gravity * delta * 25
 	else:
 		velocity.y = 0
 	var direction = input.move_input 
@@ -46,3 +59,14 @@ func _move(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+func take_damage():
+	if !cant_interact:
+		if multiplayer.is_server():
+			cant_interact = true
+			print(name, " is taking damage")
+			velocity = Vector3(0,250,0)
+			move_and_slide()
+			await get_tree().create_timer(2).timeout
+			cant_interact = false
+		
