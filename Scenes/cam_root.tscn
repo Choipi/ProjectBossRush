@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://lcci85rdod4m"]
+
+[ext_resource type="Script" uid="uid://jibutc87nx11" path="res://Scripts/cam_root.gd" id="1_t8qym"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ixqji"]
+properties/0/path = NodePath("CameraMount:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("CameraMount/CameraRot:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dewec"]
+
+[node name="CamRoot" type="Node3D" node_paths=PackedStringArray("camera_mount", "camera_rot", "camera_3D")]
+script = ExtResource("1_t8qym")
+camera_mount = NodePath("CameraMount")
+camera_rot = NodePath("CameraMount/CameraRot")
+camera_3D = NodePath("CameraMount/CameraRot/SpringArm3D/Camera3D")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ixqji")
+
+[node name="CameraMount" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.993198, 0)
+
+[node name="CameraRot" type="Node3D" parent="CameraMount"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraMount/CameraRot"]
+collision_mask = 2
+shape = SubResource("SphereShape3D_dewec")
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraMount/CameraRot/SpringArm3D"]
+fov = 90.0
