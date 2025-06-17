@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://csex40yx82c7l"]
+[gd_scene load_steps=9 format=3 uid="uid://csex40yx82c7l"]
 
 [ext_resource type="Script" uid="uid://b43jrl081sn8q" path="res://Scripts/character_body_3d.gd" id="1_rpqav"]
 [ext_resource type="Script" uid="uid://b24nc35ugdovh" path="res://Scripts/player_input_synch.gd" id="2_kyqiw"]
@@ -7,6 +7,8 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gntrk"]
 albedo_color = Color(1, 0.486275, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kyqiw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rpqav"]
 
@@ -22,6 +24,9 @@ properties/1/replication_mode = 1
 properties/0/path = NodePath("PlayerInputSynch:move_input")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("PlayerInputSynch:mouse_input")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 floor_stop_on_slope = false
@@ -31,12 +36,12 @@ script = ExtResource("1_rpqav")
 mesh = SubResource("CapsuleMesh_kyqiw")
 surface_material_override/0 = SubResource("StandardMaterial3D_gntrk")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.487516, 0, 0, 0, -0.002934, -0.490971, 0, 0.222349, -0.00647861, 0, 0.327399, -0.377429)
+mesh = SubResource("CylinderMesh_kyqiw")
+
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rpqav")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.844178, 0.253317, -0.472434, 0.000542656, 0.880899, 0.473304, 0.536062, -0.399809, 0.743498, -2.36169, 6.07868, 3.78163)
-fov = 90.0
 
 [node name="PlayerSynch" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_rpqav")
@@ -44,3 +49,18 @@ replication_config = SubResource("SceneReplicationConfig_rpqav")
 [node name="PlayerInputSynch" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_kyqiw")
 script = ExtResource("2_kyqiw")
+
+[node name="CamRoot" type="Node3D" parent="."]
+
+[node name="CamYaw" type="Node3D" parent="CamRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.993198, 0)
+
+[node name="CamPitch" type="Node3D" parent="CamRoot/CamYaw"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.869501, 0, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CamRoot/CamYaw/CamPitch"]
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="CamRoot/CamYaw/CamPitch/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37664, 2.17968, 6.51297)
+fov = 90.0
