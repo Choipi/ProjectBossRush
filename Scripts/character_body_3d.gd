@@ -33,7 +33,7 @@ func _physics_process(delta):
 	_apply_gravity(delta)
 	
 	if  is_multiplayer_authority():
-		_player_controller._physics_process_controller(delta)
+		_player_controller._physics_process_controller(delta,cant_interact)
 	else:
 		# Smooths out players (model) rotation on clients
 		var from = _player_model.global_transform.basis
@@ -41,6 +41,8 @@ func _physics_process(delta):
 		var model_transform = Basis(from.slerp(to, delta * _player_controller.ROTATION_INTERPOLATE_SPEED))
 		model_transform = model_transform.orthonormalized()
 		_player_model.global_transform.basis = model_transform
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
 func _apply_gravity(delta):
 	if not is_on_floor():
@@ -48,12 +50,13 @@ func _apply_gravity(delta):
 
 
 func take_damage():
-	if !cant_interact:
+	if !cant_interact and !_player_controller.cant_move:
 		if multiplayer.is_server():
-			cant_interact = true
-			print(name, " is taking damage")
-			velocity = Vector3(0,25,0)
-			move_and_slide()
-			await get_tree().create_timer(2).timeout
-			cant_interact = false
+			if is_on_floor():
+				cant_interact = true
+				print(name, " is taking damage")
+				velocity = Vector3(0,25,0)
+				move_and_slide()
+				await get_tree().create_timer(3.5).timeout
+				cant_interact = false
 		

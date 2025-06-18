@@ -1,8 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://cq7e3jfwyxq7k"]
+[gd_scene load_steps=11 format=3 uid="uid://cq7e3jfwyxq7k"]
+
+[ext_resource type="Shader" uid="uid://fkevjgsttica" path="res://Scenes/Floor.tres" id="1_v21bx"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_3nsfk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gkag5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8g7w5"]
+render_priority = 0
+shader = ExtResource("1_v21bx")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_v21bx"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
@@ -51,6 +57,7 @@ mesh = SubResource("PlaneMesh_3nsfk")
 transform = Transform3D(-7.944, 0, 0, 0, 0.25, 0, 0, 0, -7.944, 0, 0, 0)
 mesh = SubResource("BoxMesh_gkag5")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("ShaderMaterial_8g7w5")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terrain/MeshInstance3D"]
 

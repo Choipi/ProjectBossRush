@@ -1,0 +1,36 @@
+[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://fkevjgsttica"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qr8hw"]
+seed = 265
+frequency = 0.0338
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_358gn"]
+noise = SubResource("FastNoiseLite_qr8hw")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_8l7mi"]
+texture = SubResource("NoiseTexture2D_358gn")
+texture_type = 2
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_2 : hint_normal;
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(-265.701, -108.027)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_8l7mi")
+nodes/fragment/2/position = Vector2(-140, 80)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
