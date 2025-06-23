@@ -75,7 +75,8 @@ func _physics_process_controller(delta,cant_interact):
 		await get_tree().create_timer(0.5).timeout
 		cant_move = false
 	elif !can_dash and _player_input.dash_input:
-		show_dash_ui.rpc()
+		_player_ref.show_dash_ui()
+		
 	elif _player_input.run_input and !cant_interact:
 		position_target *= 1.5
 	if !cant_move:
@@ -90,12 +91,11 @@ func _physics_process_controller(delta,cant_interact):
 	_player_ref.move_and_slide()
 
 func _start_dash_cooldown():
+	print(_player_ref.player_name, " dashed id is: ", _player_ref.name)
 	can_dash = false
 	await get_tree().create_timer(DASH_COOLDOWN).timeout
 	can_dash = true
 
-@rpc("authority", "call_local", "reliable")
-func show_dash_ui():
-	if !can_dash:
-		$"../UI/AnimPlayer".play("Cant_Dash_UI")
+#func show_dash_ui():
+	#$"../UI/AnimPlayer".play("Cant_Dash_UI")
 	

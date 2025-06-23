@@ -60,3 +60,6 @@ func take_damage():
 				await get_tree().create_timer(3.5).timeout
 				cant_interact = false
 		
+func show_dash_ui():
+	if is_multiplayer_authority():
+		$UI/AnimPlayer.play("Cant_Dash_UI")

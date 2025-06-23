@@ -49,6 +49,10 @@ func _on_player_connected (id : int):
 	var player = player_lobby_scene.instantiate()
 	player.name = str(id)
 	spawned_nodes.add_child(player, true)
+	
+	# Set host's name manually if this is the host connecting to self
+	if id == multiplayer.get_unique_id():
+		player.player_name = local_username
 
 # called on SERVER when a player leaves
 func _on_player_disconnected (id : int):
@@ -63,6 +67,11 @@ func _on_player_disconnected (id : int):
 # called on CLIENT when you connect to server
 func _connected_to_server ():
 	OnConnectedToServer.emit()
+		# Delay a few frames to ensure server has created the player node
+	#await get_tree().create_timer(0.2).timeout
+
+	# Send username to server
+	send_username_to_server.rpc(local_username)
 
 # called on CLIENT when you fail to join a server
 func _connection_failed ():
@@ -77,3 +86,15 @@ func add_player_to_list (player : Player):
 
 func remove_player_from_list (player : Player):
 	current_players.erase(player)
+
+
+@rpc("reliable", "any_peer") # allow any client to call this on the server
+func send_username_to_server(username: String):
+	if multiplayer.is_server():
+		var player_id = multiplayer.get_remote_sender_id()
+		var player_node = spawned_nodes.get_node_or_null(str(player_id))
+		if player_node:
+			player_node.player_name = username
+			print("✅ Set username of player %s to %s" % [player_id, username])
+		else:
+			print("⚠️ Could not find player node for id: ", player_id)
